@@ -1,11 +1,11 @@
 import { IncomingMessage } from 'http';
 import { parse } from 'url';
-import { ParsedRequest, Theme } from './types';
+import { ParsedRequest } from './types';
 
 export function parseRequest(req: IncomingMessage) {
     console.log('HTTP ' + req.url);
     const { pathname = '/', query = {} } = parse(req.url || '', true);
-    const { fontSize, images, widths, heights, theme, md } = query;
+    const { fontSize, images, widths, heights, theme, md, width, height } = query;
 
     if (Array.isArray(fontSize)) {
         throw new Error('Expected a single fontSize');
@@ -13,7 +13,7 @@ export function parseRequest(req: IncomingMessage) {
     if (Array.isArray(theme)) {
         throw new Error('Expected a single theme');
     }
-    
+
     const arr = pathname.slice(1).split('.');
     let extension = '';
     let text = '';
@@ -35,8 +35,10 @@ export function parseRequest(req: IncomingMessage) {
         images: getArray(images),
         widths: getArray(widths),
         heights: getArray(heights),
+        width: width ? parseInt(width.toString()) : 2048,
+        height: height ? parseInt(height.toString()) : 1024,
     };
-    parsedRequest.images = getDefaultImages(parsedRequest.images, parsedRequest.theme);
+    parsedRequest.images = getDefaultImages(parsedRequest.images);
     return parsedRequest;
 }
 
@@ -44,11 +46,9 @@ function getArray(stringOrArray: string[] | string): string[] {
     return Array.isArray(stringOrArray) ? stringOrArray : [stringOrArray];
 }
 
-function getDefaultImages(images: string[], theme: Theme): string[] {
-    if (images.length > 0 && images[0] && images[0].startsWith('https://assets.zeit.co/image/upload/front/assets/design/')) {
+function getDefaultImages(images: string[]): string[] {
+    if (images.length > 0 && images[0] && images[0].startsWith('https://rocket-resume.com')) {
         return images;
     }
-    return theme === 'light'
-    ? ['https://assets.zeit.co/image/upload/front/assets/design/now-black.svg']
-    : ['https://assets.zeit.co/image/upload/front/assets/design/now-white.svg'];
+    return [];
 }

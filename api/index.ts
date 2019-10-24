@@ -19,7 +19,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         const { text, fileType } = parsedReq;
         const filePath = await writeTempFile(text, html);
         const fileUrl = pathToFileURL(filePath);
-        const file = await getScreenshot(fileUrl, fileType, isDev);
+        const file = await getScreenshot(fileUrl, fileType, isDev, parsedReq);
         res.statusCode = 200;
         res.setHeader('Content-Type', `image/${fileType}`);
         res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
