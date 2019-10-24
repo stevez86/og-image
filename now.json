@@ -1,6 +1,7 @@
 {
   "regions": ["all"],
-  "public": true,
+  "alias": "og-image.rocket-resume.com",
+  "public": false,
   "version": 2,
   "routes": [
     { "handle": "filesystem" },

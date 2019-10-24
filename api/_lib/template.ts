@@ -11,15 +11,18 @@ const rglr = readFileSync(`${__dirname}/../_fonts/Inter-Regular.woff2`).toString
 const bold = readFileSync(`${__dirname}/../_fonts/Inter-Bold.woff2`).toString('base64');
 const mono = readFileSync(`${__dirname}/../_fonts/Vera-Mono.woff2`).toString('base64');
 
+
+
 function getCss(theme: string, fontSize: string) {
     let background = 'white';
     let foreground = 'black';
-    let radial = 'lightgray';
+    // let radial = 'lightgray';
+    let backgroundImage = 'linear-gradient(130deg, rgba(85, 51, 255, 1) 10%, rgba(5, 213, 255, 1) 65%, rgba(166, 255, 203, 1) 100%)';
 
     if (theme === 'dark') {
         background = 'black';
         foreground = 'white';
-        radial = 'dimgray';
+        // radial = 'dimgray';
     }
     return `
     @font-face {
@@ -45,8 +48,7 @@ function getCss(theme: string, fontSize: string) {
 
     body {
         background: ${background};
-        background-image: radial-gradient(${radial} 5%, transparent 0);
-        background-size: 60px 60px;
+        background-image: ${backgroundImage};
         height: 100vh;
         display: flex;
         text-align: center;
